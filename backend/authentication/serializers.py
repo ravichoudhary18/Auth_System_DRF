@@ -100,7 +100,6 @@ class LoginSerializer(serializers.Serializer):
         password = data['password']
 
         if password is None:
-            print('password is None')
             raise serializers.ValidationError(
                 'A password is required to login.'
             )
@@ -120,19 +119,19 @@ class LoginSerializer(serializers.Serializer):
 
         if user is None:
             raise serializers.ValidationError(
-                'A user with this email or username and password was not found.'
+                'You have entered an invalid username or password.'
             )
         
         if not user.is_active:
             raise serializers.ValidationError(
-                'This user not found.'
+                'This username not found.'
             )
 
         try:
             refresh = RefreshToken.for_user(user)
             refresh_token = str(refresh)
             access_token = str(refresh.access_token)
-            print(refresh, type(refresh), refresh.access_token, type(refresh.access_token))
+            # print(refresh, type(refresh), refresh.access_token, type(refresh.access_token))
 
             update_last_login(None, user)
 
